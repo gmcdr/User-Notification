@@ -1,6 +1,7 @@
 package com.gabrielreis.usernotification.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 public class User {
 
   @Id
+  @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
   private Long id;
   private String name;
   private String email;
@@ -20,12 +22,6 @@ public class User {
 
   public User() {
 
-  }
-
-  public User(String name, String email, Event event) {
-    this.name = name;
-    this.email = email;
-    this.event = event;
   }
 
   public Long getId() {

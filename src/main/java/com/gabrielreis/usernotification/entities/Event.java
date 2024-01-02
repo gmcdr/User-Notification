@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -13,6 +14,7 @@ import jakarta.persistence.Table;
 public class Event {
 
   @Id
+  @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
   Long id;
   private String name;
   private Date date;
@@ -20,11 +22,10 @@ public class Event {
   @OneToMany(mappedBy = "event", cascade = { jakarta.persistence.CascadeType.ALL })
   private List<User> users;
 
-  public Event(String name, Date date, String message, List<User> users) {
+  public Event(String name, Date date, String message) {
     this.name = name;
     this.date = date;
     this.message = message;
-    this.users = users;
   }
 
   public String getName() {
