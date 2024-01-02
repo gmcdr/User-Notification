@@ -3,8 +3,8 @@ package com.gabrielreis.usernotification.entities;
 import java.sql.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -17,7 +17,7 @@ public class Event {
   private String name;
   private Date date;
   private String message;
-  @OneToMany(mappedBy = "event")
+  @OneToMany(mappedBy = "event", cascade = { jakarta.persistence.CascadeType.ALL })
   private List<User> users;
 
   public Event(String name, Date date, String message, List<User> users) {
