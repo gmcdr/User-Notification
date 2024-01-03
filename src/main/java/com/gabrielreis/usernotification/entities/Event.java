@@ -29,10 +29,21 @@ public class Event {
   @OneToMany(mappedBy = "event", cascade = { CascadeType.ALL })
   private List<User> users;
 
+  public Event() {
+
+  }
+
   public Event(String name, Date date, String message) {
     this.name = name;
     this.date = date;
     this.message = message;
+  }
+
+  public Event(String name, Date date, String message, List<User> users) {
+    this.name = name;
+    this.date = date;
+    this.message = message;
+    this.users = users;
   }
 
   public String getName() {
