@@ -36,8 +36,7 @@ public class UserService {
 
   public ResponseEntity<User> saveUser(User user) {
     if (userRepository.findById(user.getId()).isPresent()) {
-      LOG.info("User ID: " + user.getId() + " already exists.");
-      return new ResponseEntity<User>(userRepository.findById(user.getId()).get(), HttpStatus.CREATED);
+      throw new RuntimeException("User ID: " + user.getId() + " already exists.");
     }else {
       userRepository.save(user);
       LOG.info("User created.");

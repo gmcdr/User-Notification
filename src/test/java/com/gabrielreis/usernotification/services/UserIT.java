@@ -41,6 +41,13 @@ public class UserIT {
   }
 
   @Test
+  public void testSaveUserExists() {
+    restTemplate.postForEntity("/users/save", user, User.class);
+    ResponseEntity<User> response = restTemplate.postForEntity("/users/save", user, User.class); 
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+  }
+
+  @Test
   public void testFindUserById() {
     ResponseEntity<User> response = restTemplate.getForEntity("/users/getById/1", User.class);
     User searchedUser = response.getBody();
