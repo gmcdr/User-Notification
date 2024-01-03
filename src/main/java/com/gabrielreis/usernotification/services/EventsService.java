@@ -19,6 +19,10 @@ public class EventsService {
   @Autowired
   private EventRepository eventRepository;
 
+  public EventsService() {
+
+  }
+
   public EventsService(EventRepository eventRepository) {
     this.eventRepository = eventRepository;
   }
