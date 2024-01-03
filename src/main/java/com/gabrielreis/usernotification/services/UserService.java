@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.gabrielreis.usernotification.entities.User;
 import com.gabrielreis.usernotification.repositories.UserRepository;
 
+import ch.qos.logback.classic.Logger;
+
 /**
  * This class represents a service for managing user-related operations.
  * 
@@ -18,6 +20,8 @@ import com.gabrielreis.usernotification.repositories.UserRepository;
  */
 @Service
 public class UserService {
+
+  Logger LOG = (Logger) org.slf4j.LoggerFactory.getLogger(UserService.class);
   
   @Autowired
   private UserRepository userRepository;
@@ -31,7 +35,13 @@ public class UserService {
   }
 
   public ResponseEntity<User> saveUser(User user) {
-    userRepository.save(user);
+    if (userRepository.findById(user.getId()).isPresent()) {
+      LOG.info("User ID: " + user.getId() + " already exists.");
+      return new ResponseEntity<User>(userRepository.findById(user.getId()).get(), HttpStatus.CREATED);
+    }else {
+      userRepository.save(user);
+      LOG.info("User created.");
+    }
     return new ResponseEntity<User>(user, HttpStatus.CREATED); 
   }
 
