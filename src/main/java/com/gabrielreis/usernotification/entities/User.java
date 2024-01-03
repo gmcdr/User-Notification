@@ -7,6 +7,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Represents a user in the system.
+ * 
+ * @author Gabriel Reis.
+ */
 @Entity
 @Table(name = "users")
 public class User {

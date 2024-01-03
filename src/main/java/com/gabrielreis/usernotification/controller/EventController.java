@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * This class is responsible for handling HTTP requests related to events.
+ * 
+ * @author Gabriel Reis.
+ */
 @RestController
 @RequestMapping("/events")
 public class EventController {
