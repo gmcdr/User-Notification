@@ -22,7 +22,7 @@ import ch.qos.logback.classic.Logger;
 public class UserService {
 
   Logger LOG = (Logger) org.slf4j.LoggerFactory.getLogger(UserService.class);
-  
+
   @Autowired
   private UserRepository userRepository;
 
@@ -36,22 +36,29 @@ public class UserService {
 
   public ResponseEntity<User> saveUser(User user) {
     if (userRepository.findById(user.getId()).isPresent()) {
-      throw new RuntimeException("User ID: " + user.getId() + " already exists.");
-    }else {
+      return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+    } else {
       userRepository.save(user);
       LOG.info("User created.");
     }
-    return new ResponseEntity<User>(user, HttpStatus.CREATED); 
+    return new ResponseEntity<User>(user, HttpStatus.CREATED);
   }
 
   public ResponseEntity<User> findUserById(Long id) {
     Optional<User> user = userRepository.findById(id);
-    return new ResponseEntity<User>(Optional.of(user).get().orElseThrow(), HttpStatus.OK) ;
+    if (!user.isPresent()) {
+      return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<User>(Optional.of(user).get().orElseThrow(), HttpStatus.OK);
   }
 
   public ResponseEntity<HttpStatus> deleteUserById(Long id) {
-    userRepository.deleteById(id);
-    return new ResponseEntity<HttpStatus>(HttpStatus.OK); 
+    try {
+      userRepository.deleteById(id);
+      return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+    }
   }
 
   public List<User> findAllUsers() {
