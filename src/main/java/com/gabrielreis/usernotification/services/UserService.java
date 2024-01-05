@@ -53,10 +53,10 @@ public class UserService {
   }
 
   public ResponseEntity<HttpStatus> deleteUserById(Long id) {
-    try {
+    if (userRepository.findById(id).isPresent()) {
       userRepository.deleteById(id);
       return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-    } catch (Exception e) {
+    } else{
       return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
     }
   }

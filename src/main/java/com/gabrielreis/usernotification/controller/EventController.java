@@ -41,8 +41,8 @@ public class EventController {
 
   @GetMapping("/getById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event getEventById(@PathVariable Long param) {
-    return eventsService.findEventById(param);
+  public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+    return eventsService.findEventById(id);
   }
 
   @GetMapping("/getAll")
@@ -51,15 +51,15 @@ public class EventController {
     return eventsService.findAllEvents();
   }
 
-  @DeleteMapping("/deleteById")
+  @DeleteMapping("/deleteById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<HttpStatus> deleteEventById(@RequestParam Long param) {
-    return eventsService.deleteEventById(param);
+  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable Long id) {
+    return eventsService.deleteEventById(id);
   }
 
-  @PostMapping("/updateById")
+  @PostMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event updateById(@RequestBody Event entity) {
-      return eventsService.updateEventById(entity.getId(), entity);
+  public Event updateById(@PathVariable Long id,@RequestBody Event entity) {
+      return eventsService.updateEventById(id, entity);
   }
 }

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import com.gabrielreis.usernotification.entities.Event;
 import com.gabrielreis.usernotification.repositories.EventRepository;
@@ -28,21 +30,32 @@ public class EventsService {
   }
 
   public ResponseEntity<Event> saveEvent(Event event) {
-    eventRepository.save(event);
-    return new ResponseEntity<>(HttpStatus.OK);
+    if (eventRepository.findById(event.getId()).isPresent()) {
+      return new ResponseEntity<Event>(HttpStatus.INTERNAL_SERVER_ERROR);
+    } else {
+      eventRepository.save(event);
+      return new ResponseEntity<Event>(event, HttpStatus.CREATED);
+    }
   }
 
-  public Event findEventById(Long id) {
+  public ResponseEntity<Event> findEventById(Long id) {
     Optional<Event> event = eventRepository.findById(id);
-    return Optional.of(event).get().orElseThrow();
+    if (!event.isEmpty()) {
+      return new ResponseEntity<Event>(event.get(), HttpStatus.OK);
+    }
+    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   public ResponseEntity<HttpStatus> deleteEventById(Long id) {
-    eventRepository.deleteById(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    if (eventRepository.findById(id).isPresent()) {
+      eventRepository.deleteById(id);
+      return new ResponseEntity<>(HttpStatus.OK);
+    } else {
+      return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+    }
   }
 
-  public java.util.List<Event> findAllEvents() {
+  public List<Event> findAllEvents() {
     return eventRepository.findAll();
   }
 

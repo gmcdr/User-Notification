@@ -1,7 +1,9 @@
 package com.gabrielreis.usernotification.entities;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -24,7 +26,8 @@ public class Event {
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;
   private String name;
-  private Date date;
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+  private LocalDateTime date;
   private String message;
   @OneToMany(mappedBy = "event", cascade = { CascadeType.ALL })
   private List<User> users;
@@ -33,13 +36,20 @@ public class Event {
 
   }
 
-  public Event(String name, Date date, String message) {
+  public Event(Long id, String name, LocalDateTime date, String message) {
+    this.id = id;
     this.name = name;
     this.date = date;
     this.message = message;
   }
 
-  public Event(String name, Date date, String message, List<User> users) {
+  public Event(String name, LocalDateTime date, String message) {
+    this.name = name;
+    this.date = date;
+    this.message = message;
+  }
+
+  public Event(String name, LocalDateTime date, String message, List<User> users) {
     this.name = name;
     this.date = date;
     this.message = message;
@@ -54,11 +64,11 @@ public class Event {
     this.name = name;
   }
 
-  public Date getDate() {
+  public LocalDateTime getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDateTime date) {
     this.date = date;
   }
 
