@@ -35,13 +35,14 @@ public class UserService {
   }
 
   public ResponseEntity<User> saveUser(User user) {
-    if (userRepository.findById(user.getId()).isPresent()) {
-      return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-    } else {
+    try {
       userRepository.save(user);
       LOG.info("User created.");
+      return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    } catch (Exception e) {
+      LOG.error("Error creating user.");
+      return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
     }
-    return new ResponseEntity<User>(user, HttpStatus.CREATED);
   }
 
   public ResponseEntity<User> findUserById(Long id) {
@@ -56,7 +57,7 @@ public class UserService {
     if (userRepository.findById(id).isPresent()) {
       userRepository.deleteById(id);
       return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-    } else{
+    } else {
       return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
     }
   }
