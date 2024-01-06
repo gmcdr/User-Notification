@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,7 +74,7 @@ public class EventIT {
   @Order(4)
   public void updateEventById() {
     Event newEvent = new Event("New Json Party", LocalDateTime.of(2024, 2, 10, 10, 0, 0), "The beat goes on!");
-    ResponseEntity<Event> response = restTemplate.postForEntity("/events/updateById/1", newEvent, Event.class);
+    ResponseEntity<Event> response = restTemplate.exchange("/events/updateById/1", HttpMethod.PUT, new HttpEntity<>(newEvent), Event.class);
     Event updatedEvent = response.getBody();
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(updatedEvent);

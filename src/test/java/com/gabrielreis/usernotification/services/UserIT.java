@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class UserIT {
   @Order(5)
   public void testUpdateUserById() {
     User newUser = new User("Mary", "mary@gmail.com");
-    ResponseEntity<User> response = restTemplate.postForEntity("/users/updateById/1", newUser, User.class);
+    ResponseEntity<User> response = restTemplate.exchange("/users/updateById/1", HttpMethod.PUT, new HttpEntity<>(newUser), User.class);
     User updatedUser = response.getBody();
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(updatedUser);
