@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.gabrielreis.usernotification.entities.User;
 
@@ -18,7 +17,7 @@ import com.gabrielreis.usernotification.entities.User;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  @Query("SELECT u FROM User u JOIN u.event e WHERE e.id = :eventId")
-  public List<User> findByEventId(@Param("eventId") Long eventId);
+  @Query("SELECT u FROM User u JOIN u.event e")
+  List<User> findUsersWithEvents();
 
 }

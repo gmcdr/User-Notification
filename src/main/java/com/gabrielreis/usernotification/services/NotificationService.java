@@ -14,8 +14,7 @@ public class NotificationService {
   @Autowired
   private UserRepository userRepository;
 
-  public List<User> findUsersByEventId (Long eventId) {
-    return userRepository.findByEventId(eventId);
+  public List<User> findUsersByEventId () {
+    return userRepository.findUsersWithEvents();
   }
-  
 }

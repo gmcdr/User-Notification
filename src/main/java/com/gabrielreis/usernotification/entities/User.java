@@ -1,5 +1,7 @@
 package com.gabrielreis.usernotification.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class User {
   private String email;
   @ManyToOne
   @JoinColumn(name = "event_id")
+  @JsonBackReference
   private Event event;
 
   public User() {
