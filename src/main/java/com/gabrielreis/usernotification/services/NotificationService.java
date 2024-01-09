@@ -1,20 +1,18 @@
 package com.gabrielreis.usernotification.services;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gabrielreis.usernotification.entities.User;
-import com.gabrielreis.usernotification.repositories.UserRepository;
+import com.gabrielreis.usernotification.repositories.EventRepository;
 
 @Service
 public class NotificationService {
-
+  
   @Autowired
-  private UserRepository userRepository;
+  private EventRepository eventsRepository;
 
-  public List<User> findUsersByEventId () {
-    return userRepository.findUsersWithEvents();
+  public Object findNotifications () {
+    return eventsRepository.findNotifications();
   }
 }
