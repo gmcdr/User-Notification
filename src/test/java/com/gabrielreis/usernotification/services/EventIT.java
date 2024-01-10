@@ -3,7 +3,7 @@ package com.gabrielreis.usernotification.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -25,7 +25,7 @@ public class EventIT {
 
   private Long id = 1L;
 
-  private Event event = new Event(id, "Json Party", LocalDateTime.of(2024, 1, 10, 10, 0, 0), "The beat goes on!");
+  private Event event = new Event(id, "Json Party", LocalDate.of(2024, 1, 10), "The beat goes on!");
 
   @Autowired
   private TestRestTemplate restTemplate;
@@ -73,7 +73,7 @@ public class EventIT {
   @Test
   @Order(4)
   public void updateEventById() {
-    Event newEvent = new Event("New Json Party", LocalDateTime.of(2024, 2, 10, 10, 0, 0), "The beat goes on!");
+    Event newEvent = new Event("New Json Party", LocalDate.of(2024, 2, 10), "The beat goes on!");
     ResponseEntity<Event> response = restTemplate.exchange("/events/updateById/1", HttpMethod.PUT, new HttpEntity<>(newEvent), Event.class);
     Event updatedEvent = response.getBody();
     assertEquals(HttpStatus.OK, response.getStatusCode());

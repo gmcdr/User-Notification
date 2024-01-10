@@ -18,6 +18,6 @@ import com.gabrielreis.usernotification.entities.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-  @Query("SELECT e.message, e.name, u.email, u.name FROM Event e INNER JOIN e.users u WHERE e.date >= CURRENT_TIMESTAMP")
+  @Query("SELECT e.message, e.name, u.email, u.name FROM Event e INNER JOIN e.users u WHERE e.date = CURRENT_DATE")
   List<Object> findNotifications();
 }

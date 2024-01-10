@@ -1,6 +1,6 @@
 package com.gabrielreis.usernotification.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,8 +30,8 @@ public class Event {
   Long id;
   @Column(name = "event_name")
   private String name;
-  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-  private LocalDateTime date;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate date;
   private String message;
   @OneToMany(mappedBy = "event", cascade = { CascadeType.ALL })
   @JsonManagedReference
@@ -41,20 +41,20 @@ public class Event {
 
   }
 
-  public Event(Long id, String name, LocalDateTime date, String message) {
+  public Event(Long id, String name, LocalDate date, String message) {
     this.id = id;
     this.name = name;
     this.date = date;
     this.message = message;
   }
 
-  public Event(String name, LocalDateTime date, String message) {
+  public Event(String name, LocalDate date, String message) {
     this.name = name;
     this.date = date;
     this.message = message;
   }
 
-  public Event(String name, LocalDateTime date, String message, List<User> users) {
+  public Event(String name, LocalDate date, String message, List<User> users) {
     this.name = name;
     this.date = date;
     this.message = message;
@@ -69,11 +69,11 @@ public class Event {
     this.name = name;
   }
 
-  public LocalDateTime getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(LocalDateTime date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
