@@ -60,6 +60,6 @@ public class EventController {
   @PutMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
   public Event updateById(@PathVariable Long id,@RequestBody Event entity) {
-      return eventsService.updateEventById(id, entity);
+    return eventsService.updateEventById(id, entity);
   }
 }

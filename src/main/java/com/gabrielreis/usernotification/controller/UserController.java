@@ -57,7 +57,7 @@ public class UserController {
   @PutMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
   public User updateById(@PathVariable Long id, @RequestBody User user) {
-      return userService.updateUserById(id, user);
+    return userService.updateUserById(id, user);
   }
 
 }
