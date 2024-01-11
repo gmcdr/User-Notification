@@ -3,7 +3,6 @@ package com.gabrielreis.usernotification.notification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class Notification {
 

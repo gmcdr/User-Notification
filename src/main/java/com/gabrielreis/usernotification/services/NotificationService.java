@@ -29,4 +29,8 @@ public class NotificationService {
     }
     return result;
   }
+
+  public void deleteNotifications() {
+    eventsRepository.deleteAll();
+  }
 }
