@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.gabrielreis.usernotification.dto.NotificationDTO;
@@ -14,6 +16,20 @@ public class NotificationService {
 
   @Autowired
   private EventRepository eventsRepository;
+
+  @Autowired
+  private JavaMailSender javaMailSender;
+
+  public void deleteNotifications() {
+    eventsRepository.deleteAll();
+  }
+
+  public void sendNotification() {
+    List<NotificationDTO> notificationDTOs = findNotifications();
+    for (NotificationDTO notificationDTO : notificationDTOs) {
+      sendEmail(notificationDTO);
+    }
+  }
 
   public List<NotificationDTO> findNotifications() {
     List<Object> notifications = eventsRepository.findNotifications();
@@ -30,7 +46,11 @@ public class NotificationService {
     return result;
   }
 
-  public void deleteNotifications() {
-    eventsRepository.deleteAll();
+  public void sendEmail(NotificationDTO notificationDTO) {
+    SimpleMailMessage notification = new SimpleMailMessage();
+    notification.setTo(notificationDTO.getEmail());
+    notification.setSubject(notificationDTO.getTitle());
+    notification.setText(notificationDTO.getMessage());
+    javaMailSender.send(notification);
   }
 }

@@ -10,6 +10,6 @@ public class Notification {
 
   @Scheduled(fixedRate = 60000)
   public void sendNotification() {
-    notificationJob.sendNotification();
+    notificationJob.execute();
   }
 }
