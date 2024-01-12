@@ -1,14 +1,19 @@
 package com.gabrielreis.usernotification.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import com.gabrielreis.usernotification.entities.Event;
 import com.gabrielreis.usernotification.repositories.EventRepository;
+
 
 /**
  * This class represents a service for managing events.
@@ -18,57 +23,61 @@ import com.gabrielreis.usernotification.repositories.EventRepository;
 @Service
 public class EventsService {
 
+  Logger LOG = LoggerFactory.getLogger(EventsService.class);
+
   @Autowired
   private EventRepository eventRepository;
-
-  public EventsService() {
-
-  }
 
   public EventsService(EventRepository eventRepository) {
     this.eventRepository = eventRepository;
   }
 
-  public ResponseEntity<Event> saveEvent(Event event) {
-    if (eventRepository.findById(event.getId()).isPresent()) {
-      return new ResponseEntity<Event>(HttpStatus.INTERNAL_SERVER_ERROR);
-    } else {
-      eventRepository.save(event);
-      return new ResponseEntity<Event>(event, HttpStatus.CREATED);
-    }
+  public ResponseEntity<Event> saveEvent(@NonNull Event event) {
+    eventRepository.save(event);
+    LOG.info("Event created.");
+    return ResponseEntity.ok(event);
   }
 
-  public ResponseEntity<Event> findEventById(Long id) {
+  public ResponseEntity<Event> findEventById(@NonNull Long id) {
     Optional<Event> event = eventRepository.findById(id);
-    if (!event.isEmpty()) {
-      return new ResponseEntity<Event>(event.get(), HttpStatus.OK);
-    }
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    verifyNullableEvent(event.get());
+    return ResponseEntity.ok(event.get());
   }
 
-  public ResponseEntity<HttpStatus> deleteEventById(Long id) {
-    if (eventRepository.findById(id).isPresent()) {
-      eventRepository.deleteById(id);
-      return new ResponseEntity<>(HttpStatus.OK);
-    } else {
-      return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<HttpStatus> deleteEventById(@NonNull Long id) {
+    verifyEventExistence(id);
+    eventRepository.deleteById(id);
+    LOG.info("Event deleted.");
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   public List<Event> findAllEvents() {
     return eventRepository.findAll();
   }
 
-  public Event updateEventById(Long id, Event event) {
+  public Event updateEventById(@NonNull Long id, @NonNull Event event) {
     Optional<Event> currentEvent = eventRepository.findById(id);
-    if (currentEvent.isPresent()) {
-      currentEvent.get().setName(event.getName());
-      currentEvent.get().setDate(event.getDate());
-      currentEvent.get().setMessage(event.getMessage());
-      currentEvent.get().setUsers(event.getUsers());
-      eventRepository.save(currentEvent.get());
-    }
-    return currentEvent.get();
+    verifyNullableEvent(currentEvent.get());
+    Event updatedEvent = currentEvent.get();
+    updatedEventBody(event, updatedEvent);
+    Objects.requireNonNull(updatedEvent, "updatedEvent is null");
+    saveEvent(updatedEvent);
+    LOG.info("Event updated.");
+    return updatedEvent;
   }
 
+  public void updatedEventBody(Event event, Event updatedEvent){
+    updatedEvent.setName(event.getName());
+    updatedEvent.setDate(event.getDate());
+    updatedEvent.setMessage(event.getMessage());
+    updatedEvent.setUsers(event.getUsers());
+  }
+
+  public void verifyEventExistence(@NonNull Long id) {
+    eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+  }
+
+  public void verifyNullableEvent(Event event) {
+    Optional.ofNullable(event).orElseThrow(() -> new IllegalArgumentException("Event cannot be null"));
+  }
 }

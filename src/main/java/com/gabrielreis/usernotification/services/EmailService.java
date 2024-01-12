@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.gabrielreis.usernotification.dto.NotificationDTO;
 
-
 @Service
 public class EmailService {
 
@@ -16,9 +15,9 @@ public class EmailService {
 
   public void sendEmail(NotificationDTO notificationDTO) {
     SimpleMailMessage notification = new SimpleMailMessage();
-    notification.setTo(notificationDTO.getEmail());
-    notification.setSubject(notificationDTO.getTitle());
-    notification.setText(notificationDTO.getMessage());
+    notification.setTo(notificationDTO.email());
+    notification.setSubject(notificationDTO.title());
+    notification.setText(notificationDTO.message());
     javaMailSender.send(notification);
   }
 
