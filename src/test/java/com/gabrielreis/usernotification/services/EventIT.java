@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.gabrielreis.usernotification.entities.Event;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EventIT {
 
