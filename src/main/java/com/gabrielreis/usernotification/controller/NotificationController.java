@@ -1,8 +1,6 @@
 package com.gabrielreis.usernotification.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,16 +13,6 @@ public class NotificationController {
   
   @Autowired
   private NotificationService notificationService;
-
-  @GetMapping("/pending")
-  public Object getNotifications() {
-    return notificationService.findNotifications();
-  }
-
-  @DeleteMapping("/done")
-  public void deleteNotifications() {
-    notificationService.deleteNotifications();
-  }
 
   @PostMapping("/send")
   public void sendNotifications() {

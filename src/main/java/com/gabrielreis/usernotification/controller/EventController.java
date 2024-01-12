@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,13 +36,13 @@ public class EventController {
 
   @PostMapping("/save")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public ResponseEntity<Event> saveEvent(@RequestBody Event event) {
+  public ResponseEntity<Event> saveEvent(@RequestBody @NonNull Event event) {
     return eventsService.saveEvent(event);
   }
 
   @GetMapping("/getById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+  public ResponseEntity<Event> getEventById(@PathVariable @NonNull Long id) {
     return eventsService.findEventById(id);
   }
 
@@ -53,13 +54,13 @@ public class EventController {
 
   @DeleteMapping("/deleteById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable Long id) {
+  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable @NonNull Long id) {
     return eventsService.deleteEventById(id);
   }
 
   @PutMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event updateById(@PathVariable Long id,@RequestBody Event entity) {
+  public Event updateById(@PathVariable @NonNull Long id, @RequestBody @NonNull Event entity) {
     return eventsService.updateEventById(id, entity);
   }
 }

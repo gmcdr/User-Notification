@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,13 +33,13 @@ public class UserController {
 
   @PostMapping("/save")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public ResponseEntity<User> saveUser(@RequestBody User user) {
+  public ResponseEntity<User> saveUser(@RequestBody @NonNull User user) {
     return userService.saveUser(user);
   }
 
   @GetMapping("/getById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<User> getUserById(@PathVariable Long id) {
+  public ResponseEntity<User> getUserById(@PathVariable @NonNull Long id) {
     return userService.findUserById(id);
   }
 
@@ -50,13 +51,13 @@ public class UserController {
 
   @DeleteMapping("/deleteById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable Long id) {
+  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable @NonNull Long id) {
     return userService.deleteUserById(id);
   }
 
   @PutMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public User updateById(@PathVariable Long id, @RequestBody User user) {
+  public User updateById(@PathVariable @NonNull Long id, @RequestBody @NonNull User user) {
     return userService.updateUserById(id, user);
   }
 
