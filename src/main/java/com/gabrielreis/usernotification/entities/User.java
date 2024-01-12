@@ -26,4 +26,15 @@ public class User {
   @JsonBackReference
   private Event event;
 
+  public User(Long id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
+
+  public User(String name, String email) {
+    this.name = name;
+    this.email = email;
+  }
+
 }
