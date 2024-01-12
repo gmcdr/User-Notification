@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * Represents an event in the system.
@@ -23,8 +24,9 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "events")
+@Data
 public class Event {
-
+  
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;
@@ -36,65 +38,5 @@ public class Event {
   @OneToMany(mappedBy = "event", cascade = { CascadeType.ALL })
   @JsonManagedReference
   private List<User> users;
-
-  public Event() {
-
-  }
-
-  public Event(Long id, String name, LocalDate date, String message) {
-    this.id = id;
-    this.name = name;
-    this.date = date;
-    this.message = message;
-  }
-
-  public Event(String name, LocalDate date, String message) {
-    this.name = name;
-    this.date = date;
-    this.message = message;
-  }
-
-  public Event(String name, LocalDate date, String message, List<User> users) {
-    this.name = name;
-    this.date = date;
-    this.message = message;
-    this.users = users;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LocalDate getDate() {
-    return date;
-  }
-
-  public void setDate(LocalDate date) {
-    this.date = date;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public List<User> getUsers() {
-    return users;
-  }
-
-  public void setUsers(List<User> users) {
-    this.users = users;
-  }
 
 }

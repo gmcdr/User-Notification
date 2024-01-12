@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * Represents a user in the system.
@@ -17,8 +18,9 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "users")
+@Data
 public class User {
-
+  
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -29,52 +31,4 @@ public class User {
   @JsonBackReference
   private Event event;
 
-  public User() {
-
-  }
-
-  public User(Long id, String name, String email) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-  }
-
-  public User(String name, String email, Event event) {
-    this.name = name;
-    this.email = email;
-    this.event = event;
-  }
-
-  public User(String name, String email) {
-    this.name = name;
-    this.email = email;
-  }
-
-  public Long getId() {
-    return id;
-  }
-  
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public Event getEvent() {
-    return event;
-  }
-
-  public void setEvent(Event event) {
-    this.event = event;
-  }
 }
