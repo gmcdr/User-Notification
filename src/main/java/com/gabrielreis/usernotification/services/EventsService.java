@@ -15,11 +15,6 @@ import com.gabrielreis.usernotification.entities.Event;
 import com.gabrielreis.usernotification.repositories.EventRepository;
 
 
-/**
- * This class represents a service for managing events.
- * 
- * @author Gabriel Reis.
- */
 @Service
 public class EventsService {
 

@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gabrielreis.usernotification.entities.User;
 import com.gabrielreis.usernotification.services.UserService;
 
-/**
- * This class represents the controller for managing user-related operations.
- * 
- * @author Gabriel Reis.
- */
 @RestController
 @RequestMapping("/users")
 public class UserController {

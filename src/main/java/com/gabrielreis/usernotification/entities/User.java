@@ -11,11 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-/**
- * Represents a user in the system.
- * 
- * @author Gabriel Reis.
- */
 @Entity
 @Table(name = "users")
 @Data

@@ -15,11 +15,6 @@ import org.springframework.stereotype.Service;
 import com.gabrielreis.usernotification.entities.User;
 import com.gabrielreis.usernotification.repositories.UserRepository;
 
-/**
- * This class represents a service for managing user-related operations.
- * 
- * @author Gabriel Reis
- */
 @Service
 public class UserService {
 

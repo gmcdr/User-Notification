@@ -17,11 +17,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-/**
- * Represents an event in the system.
- * 
- * @author Gabriel Reis.
- */
 @Entity
 @Table(name = "events")
 @Data
