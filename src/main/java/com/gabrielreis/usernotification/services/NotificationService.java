@@ -23,7 +23,7 @@ public class NotificationService {
   public void deleteNotifications() {
     eventsRepository.deleteAll();
   }
-
+  
   public void sendNotification() {
     List<NotificationDTO> notificationDTOs = findNotifications();
     for (NotificationDTO notificationDTO : notificationDTOs) {
@@ -47,10 +47,11 @@ public class NotificationService {
   }
 
   public void sendEmail(NotificationDTO notificationDTO) {
+    System.out.println("Sending email to: " + notificationDTO.email());
     SimpleMailMessage notification = new SimpleMailMessage();
-    notification.setTo(notificationDTO.getEmail());
-    notification.setSubject(notificationDTO.getTitle());
-    notification.setText(notificationDTO.getMessage());
+    notification.setTo(notificationDTO.email());
+    notification.setSubject(notificationDTO.title());
+    notification.setText(notificationDTO.message());
     javaMailSender.send(notification);
   }
 }
