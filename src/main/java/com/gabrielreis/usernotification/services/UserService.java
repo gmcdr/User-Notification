@@ -1,17 +1,19 @@
 package com.gabrielreis.usernotification.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.gabrielreis.usernotification.entities.User;
 import com.gabrielreis.usernotification.repositories.UserRepository;
-
-import ch.qos.logback.classic.Logger;
 
 /**
  * This class represents a service for managing user-related operations.
@@ -21,59 +23,59 @@ import ch.qos.logback.classic.Logger;
 @Service
 public class UserService {
 
-  Logger LOG = (Logger) org.slf4j.LoggerFactory.getLogger(UserService.class);
+  Logger LOG = LoggerFactory.getLogger(UserService.class);
 
   @Autowired
   private UserRepository userRepository;
-
-  public UserService() {
-
-  }
 
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
-  public ResponseEntity<User> saveUser(User user) {
-    try {
-      userRepository.save(user);
-      LOG.info("User created.");
-      return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    } catch (Exception e) {
-      LOG.error("Error creating user.");
-      return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
-    }
+  public ResponseEntity<User> saveUser(@NonNull User user) {
+    userRepository.save(user);
+    LOG.info("User created.");
+    return ResponseEntity.status(HttpStatus.CREATED).body(user);
   }
 
-  public ResponseEntity<User> findUserById(Long id) {
+  public ResponseEntity<User> findUserById(@NonNull Long id) {
     Optional<User> user = userRepository.findById(id);
-    if (!user.isPresent()) {
-      return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-    }
-    return new ResponseEntity<User>(Optional.of(user).get().orElseThrow(), HttpStatus.OK);
+    verifyNullableUser(user.get());
+    return ResponseEntity.ok(user.get());
   }
 
-  public ResponseEntity<HttpStatus> deleteUserById(Long id) {
-    if (userRepository.findById(id).isPresent()) {
-      userRepository.deleteById(id);
-      return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-    } else {
-      return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<HttpStatus> deleteUserById(@NonNull Long id) {
+    verifyUserExistence(id);
+    userRepository.deleteById(id);
+    LOG.info("User deleted.");
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   public List<User> findAllUsers() {
     return userRepository.findAll();
   }
 
-  public User updateUserById(Long id, User user) {
+  public User updateUserById(@NonNull Long id, @NonNull User user) {
     Optional<User> currentUser = userRepository.findById(id);
-    if (currentUser.isPresent()) {
-      currentUser.get().setName(user.getName());
-      currentUser.get().setEmail(user.getEmail());
-      currentUser.get().setEvent(user.getEvent());
-      userRepository.save(currentUser.get());
-    }
+    verifyNullableUser(currentUser.get());
+    User updatedUser = currentUser.get();
+    updatedUserBody(user, updatedUser);
+    Objects.requireNonNull(updatedUser, "currentUser is null");
+    userRepository.save(updatedUser);
     return currentUser.get();
+  }
+
+  public void updatedUserBody(User user, User updatedUser) {
+    updatedUser.setName(user.getName());
+    updatedUser.setEmail(user.getEmail());
+    updatedUser.setEvent(user.getEvent());
+  }
+
+  public void verifyUserExistence(@NonNull Long id) {
+    userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+  }
+
+  public void verifyNullableUser(User user) {
+    Optional.ofNullable(user).orElseThrow(() -> new IllegalArgumentException("User cannot be null"));
   }
 }
