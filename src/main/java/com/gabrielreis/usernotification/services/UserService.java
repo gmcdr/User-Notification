@@ -35,8 +35,7 @@ public class UserService {
 
   public ResponseEntity<User> findUserById(@NonNull Long id) {
     Optional<User> user = userRepository.findById(id);
-    verifyNullableUser(user.get());
-    return ResponseEntity.ok(user.get());
+    return user.map(u -> ResponseEntity.ok(u)).orElse(ResponseEntity.notFound().build());
   }
 
   public ResponseEntity<HttpStatus> deleteUserById(@NonNull Long id) {
@@ -52,8 +51,7 @@ public class UserService {
 
   public User updateUserById(@NonNull Long id, @NonNull User user) {
     Optional<User> currentUser = userRepository.findById(id);
-    verifyNullableUser(currentUser.get());
-    User updatedUser = currentUser.get();
+    User updatedUser = currentUser.orElseThrow();
     updatedUserBody(user, updatedUser);
     Objects.requireNonNull(updatedUser, "currentUser is null");
     userRepository.save(updatedUser);
@@ -68,9 +66,5 @@ public class UserService {
 
   public void verifyUserExistence(@NonNull Long id) {
     userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-  }
-
-  public void verifyNullableUser(User user) {
-    Optional.ofNullable(user).orElseThrow(() -> new IllegalArgumentException("User cannot be null"));
   }
 }

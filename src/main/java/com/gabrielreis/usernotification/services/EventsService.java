@@ -35,8 +35,7 @@ public class EventsService {
 
   public ResponseEntity<Event> findEventById(@NonNull Long id) {
     Optional<Event> event = eventRepository.findById(id);
-    verifyNullableEvent(event.get());
-    return ResponseEntity.ok(event.get());
+    return event.map(e -> ResponseEntity.ok(e)).orElse(ResponseEntity.notFound().build());
   }
 
   public ResponseEntity<HttpStatus> deleteEventById(@NonNull Long id) {
@@ -52,8 +51,7 @@ public class EventsService {
 
   public Event updateEventById(@NonNull Long id, @NonNull Event event) {
     Optional<Event> currentEvent = eventRepository.findById(id);
-    verifyNullableEvent(currentEvent.get());
-    Event updatedEvent = currentEvent.get();
+    Event updatedEvent = currentEvent.orElseThrow();
     updatedEventBody(event, updatedEvent);
     Objects.requireNonNull(updatedEvent, "updatedEvent is null");
     saveEvent(updatedEvent);
@@ -70,9 +68,5 @@ public class EventsService {
 
   public void verifyEventExistence(@NonNull Long id) {
     eventRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
-  }
-
-  public void verifyNullableEvent(Event event) {
-    Optional.ofNullable(event).orElseThrow(() -> new IllegalArgumentException("Event cannot be null"));
   }
 }
