@@ -14,17 +14,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * This class is responsible for handling HTTP requests related to events.
- * 
- * @author Gabriel Reis.
- */
 @RestController
 @RequestMapping("/events")
 public class EventController {
@@ -34,14 +31,14 @@ public class EventController {
 
   @PostMapping("/save")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public ResponseEntity<Event> saveEvent(@RequestBody Event event) {
+  public ResponseEntity<Event> saveEvent(@RequestBody @NonNull Event event) {
     return eventsService.saveEvent(event);
   }
 
-  @GetMapping("/getById")
+  @GetMapping("/getById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event getEventById(@RequestParam Long param) {
-    return eventsService.findEventById(param);
+  public ResponseEntity<Event> getEventById(@PathVariable @NonNull Long id) {
+    return eventsService.findEventById(id);
   }
 
   @GetMapping("/getAll")
@@ -50,15 +47,15 @@ public class EventController {
     return eventsService.findAllEvents();
   }
 
-  @DeleteMapping("/deleteById")
+  @DeleteMapping("/deleteById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public ResponseEntity<HttpStatus> deleteEventById(@RequestParam Long param) {
-    return eventsService.deleteEventById(param);
+  public ResponseEntity<HttpStatus> deleteEventById(@PathVariable @NonNull Long id) {
+    return eventsService.deleteEventById(id);
   }
 
-  @PostMapping("/updateById")
+  @PutMapping("/updateById/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event updateById(@RequestBody Event entity) {
-      return eventsService.updateEventById(entity.getId(), entity);
+  public Event updateById(@PathVariable @NonNull Long id, @RequestBody @NonNull Event entity) {
+    return eventsService.updateEventById(id, entity);
   }
 }
