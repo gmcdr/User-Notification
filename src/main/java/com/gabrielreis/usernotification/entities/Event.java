@@ -34,6 +34,9 @@ public class Event {
   @JsonManagedReference
   private List<User> users;
 
+  public Event() {
+  }
+
   public Event(Long id, String name, LocalDate date, String message) {
     this.id = id;
     this.name = name;

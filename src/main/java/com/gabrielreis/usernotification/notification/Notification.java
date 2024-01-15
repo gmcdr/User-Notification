@@ -19,16 +19,20 @@ public class Notification implements Job{
   RestTemplate restTemplate = new RestTemplate();
   final String URL = Endpoints.SEND_NOTIFICATION.url;
 
-  @Scheduled(fixedRate = 600000)
+  @Scheduled(fixedRate = 60000)
   public void sendNotification() {
     execute();
   }
 
   @Override
   public void execute() {
-    Objects.requireNonNull(restTemplate, "restTemplate is null");
-    Objects.requireNonNull(URL, "URL is null");
-    restTemplate.postForObject(URL, Object.class, Object.class);
-    LOG.info("Notification sent");
+    try {
+      Objects.requireNonNull(restTemplate, "restTemplate is null");
+      Objects.requireNonNull(URL, "URL is null");
+      restTemplate.postForObject(URL, Object.class, Object.class);
+      LOG.info("Notification sent");
+    } catch (Exception e) {
+      LOG.error("Error sending notification: " + e.getMessage());
+    }
   }
 }
