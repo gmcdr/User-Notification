@@ -169,15 +169,3 @@ Document any relevant API endpoints for managing events, users, and notification
 ### Notifications
 
 - **Endpoint 1**: `/notifications/send` - Send all pending notifications.
-
-## Contributors
-
-- List the contributors or acknowledge external libraries used in the project.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Any additional acknowledgments or credits can be added here.
