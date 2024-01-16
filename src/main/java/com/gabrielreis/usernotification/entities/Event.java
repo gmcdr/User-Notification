@@ -35,6 +35,7 @@ public class Event {
   private List<User> users;
 
   public Event() {
+    
   }
 
   public Event(Long id, String name, LocalDate date, String message) {
