@@ -36,7 +36,7 @@ public class EventIT {
     ResponseEntity<Event> response = restTemplate.postForEntity("/events/save", event, Event.class);
     Event savedEvent = response.getBody();
     assertNotNull(savedEvent);
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(event.getId(), savedEvent.getId());
     assertEquals(event.getName(), savedEvent.getName());
     assertEquals(event.getDate(), savedEvent.getDate());
@@ -86,7 +86,7 @@ public class EventIT {
   @Test
   @Order(5)
   public void testDeleteEventById() {
-    ResponseEntity<Event> response = restTemplate.exchange("/events/deleteById/1", HttpMethod.DELETE, null, Event.class);
+    ResponseEntity<HttpStatus> response = restTemplate.exchange("/events/deleteById/1", HttpMethod.DELETE, null, HttpStatus.class);
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
 

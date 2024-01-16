@@ -43,7 +43,6 @@ public class UserIT {
     assertEquals(user.getId(), savedUser.getId());
     assertEquals(user.getName(), savedUser.getName());
     assertEquals(user.getEmail(), savedUser.getEmail());
-    
   }
 
   @Test
@@ -76,7 +75,6 @@ public class UserIT {
     assertEquals(user.getId(), users[0].getId());
     assertEquals(user.getName(), users[0].getName());
     assertEquals(user.getEmail(), users[0].getEmail());
-    
   }
 
   @Test
